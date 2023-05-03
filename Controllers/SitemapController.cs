@@ -11,11 +11,15 @@ namespace LampStore.Controllers
 		private ICatalogRepository repository;
 		private IInfoRepository infoRepository;
 		private ICooperationRepository cooperationRepository;
-		public SitemapController(ICatalogRepository repo, IInfoRepository infoRepo, ICooperationRepository cooperationRepo)
+		private ICollectionLight collectionRepository;
+		private IModelLight modelLightRepository;
+		public SitemapController(ICatalogRepository repo, IInfoRepository infoRepo, ICooperationRepository cooperationRepo, ICollectionLight collectionRepo, IModelLight modelLightRepo)
 		{
 			repository = repo;
 			cooperationRepository = cooperationRepo;
 			infoRepository = infoRepo;
+			collectionRepository = collectionRepo;
+			modelLightRepository = modelLightRepo;
 		}
 
 		[Route("sitemap")]
@@ -25,6 +29,8 @@ namespace LampStore.Controllers
 			var categorys = await GetCategoryAsync();
 			var info = await GetInfoAsync();
 			var cooperation = await GetCooperationAsync();
+			var collections = await GetCollectionsAsync();
+			var modelsLights = await GetLightsModelsAsync();
 
 			List<SitemapNode> nodes = new List<SitemapNode>
 			{
@@ -33,8 +39,11 @@ namespace LampStore.Controllers
 			new SitemapNode(Url.Action("Index", "catalog")),
 			new SitemapNode(Url.Action("Index", "info")),
 			new SitemapNode(Url.Action("Index", "cooperation")),
-			new SitemapNode(Url.Action("Index", "contacts"))
+			new SitemapNode(Url.Action("Index", "contacts")),
+			new SitemapNode(Url.Action("Index", "collections")),
+			new SitemapNode(Url.Action("Index", "privacy"))
 			};
+
 			foreach (var product in products)
 			{
 				nodes.Add(new SitemapNode(Url.Action(product.Name.ToLower(), "catalog", new { id = product.ProductID }))
@@ -71,6 +80,24 @@ namespace LampStore.Controllers
 				});
 			}
 
+			foreach (var c in collections)
+			{
+				nodes.Add(new SitemapNode(Url.Action(c.Name.ToLower(), "collections"))
+				{
+					ChangeFrequency = ChangeFrequency.Monthly,
+					Priority = 0.5M
+				});
+			}
+
+			foreach (var c in modelsLights)
+			{
+				nodes.Add(new SitemapNode(Url.Action(c.CollectionModel.Name.ToLower(), "collections", new { id = c.Name.ToLower() }))
+				{
+					ChangeFrequency = ChangeFrequency.Monthly,
+					Priority = 0.5M
+				});
+			}
+
 			return new SitemapProvider().CreateSitemap(new SitemapModel(nodes));
 
 		}
@@ -94,5 +121,11 @@ namespace LampStore.Controllers
 			return await cooperationRepository.Cooperations.Where(c => c.IsVisible == true).ToListAsync();
 		}
 
+		private async Task<List<CollectionLight>> GetCollectionsAsync()
+		{
+			return await collectionRepository.CollectionLight.Where(c => c.IsAvailable == true).ToListAsync();
+		}
+
+		private async Task<List<ModelLight>> GetLightsModelsAsync() => await modelLightRepository.LightsModels.Where(c => c.IsAvailable == true).ToListAsync();
 	}
 }

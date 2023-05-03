@@ -16,6 +16,8 @@ namespace LampStore.Models
 		public IQueryable<Category> Category => context.Categorys;
 		public IQueryable<Tag> Tags => context.Tags;
 		public IQueryable<ProductType> Types => context.TypeProducts;
+		public IQueryable<CollectionLight> CollectionsModels => context.CollectionLights;
+		public IQueryable<ModelLight> LightsModels => context.LightsModels;
 
 		public void CreateProduct(Product p)
 		{

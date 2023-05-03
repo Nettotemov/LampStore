@@ -55,5 +55,35 @@ namespace LampStore.Services
 		{
 			return products.Where(p => p.Price >= Convert.ToInt64(minPrice)).Where(p => p.Price <= Convert.ToInt64(maxPrice)).ToList();
 		}
+
+
+		public List<Product> FilterForLightSource(string lightSource, List<Product> products)
+		{
+			return products.Where(p => p.LightSource == lightSource).ToList();
+		}
+
+		public List<Product> FilterForColor(string color, List<Product> products)
+		{
+			return products.Where(p => p.Color == color).ToList();
+		}
+
+		public List<Product> FilterForSize(string size, List<Product> products)
+		{
+			return products.Where(p => p.Size == size).ToList();
+		}
+		public List<Product> FilterForModel(string model, List<Product> products)
+		{
+			return products.Where(p => p.ModelLight?.Name == model).ToList();
+		}
+
+		public List<Product> FilterForPower(string powerW, List<Product> products)
+		{
+			return products.Where(p => p.PowerW == powerW).ToList();
+		}
+
+		public List<Product> FilterForAddController(string dim, List<Product> products)
+		{
+			return products.Where(p => p.AddControl == dim).ToList();
+		}
 	}
 }

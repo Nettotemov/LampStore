@@ -6,6 +6,8 @@ namespace LampStore.Models
 		IQueryable<Category> Category { get; }
 		IQueryable<Tag> Tags { get; }
 		IQueryable<ProductType> Types { get; }
+		IQueryable<CollectionLight> CollectionsModels { get; }
+		IQueryable<ModelLight> LightsModels { get; }
 
 		void SaveProduct(Product p);
 		void CreateProduct(Product p);

@@ -31,11 +31,11 @@
 			</div>
 			<div class="product-card__price-info">
 				<p id="product-price" class="h5" price-value="@Model.productCard?.Price.ToString()">Цена:
-					@Model.productCard?.Price.ToString("c", new CultureInfo("ru-RU"))</p>
+					@Model.productCard?.Price.ToString("C0", new CultureInfo("ru-RU"))</p>
 				@if (@Model.productCard?.Discount != null && @Model.productCard?.OldPrice != null)
 				{
 					<p class="h6">Скидка: @Model.productCard?.Discount%</p>
-					<p class="h6">Cтрая цена: <s>@Model.productCard?.OldPrice?.ToString("c", new CultureInfo("ru-RU"))</s></p>
+					<p class="h6">Cтрая цена: <s>@Model.productCard?.OldPrice?.ToString("C0", new CultureInfo("ru-RU"))</s></p>
 				}
 			</div>
 		</div>
@@ -55,7 +55,7 @@
 			<div class="gray-line"></div>
 			<div class="product-card__total">
 				<p class="h5">Total</p>
-				<p id="total-price" class="h5">@Model.productCard?.Price.ToString("c", new CultureInfo("ru-RU"))</p>
+				<p id="total-price" class="h5">@Model.productCard?.Price.ToString("C0", new CultureInfo("ru-RU"))</p>
 			</div>
 		</div>
 	</div>
@@ -127,7 +127,7 @@
 				<p class="product-card__characteristic">Наличие</p>
 				@if (@Model.productCard?.Availability == true)
 				{
-					<p class="product-card__characteristic">В наличие</p>
+					<p class="product-card__characteristic">В наличии</p>
 				}
 				else
 				{
@@ -160,7 +160,7 @@
 					</div>
 					<div class="product-desc__wrapper">
 						<p class="title-wrp">@product.Name</p>
-						<p class="product-price">@product.Price.ToString("C", new CultureInfo("ru-RU"))</p>
+						<p class="product-price">@product.Price.ToString("C0", new CultureInfo("ru-RU"))</p>
 					</div>
 				</a>
 			}

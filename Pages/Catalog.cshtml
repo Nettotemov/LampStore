@@ -199,7 +199,7 @@
 									</div>
 									<div class="footer-card__wrapper">
 										<p class="footer-card__text">@pr.Name</p>
-										<p class="footer-card__price">@pr.Price.ToString("C", new CultureInfo("ru-RU"))</p>
+										<p class="footer-card__price">@pr.Price.ToString("C0", new CultureInfo("ru-RU"))</p>
 									</div>
 								</a>
 								<form id="ProductID=@pr.ProductID" class="addToCart" asp-page="/Cart" method="post">

@@ -43,9 +43,9 @@ namespace LampStore.Pages
 
 		CatalogServices catalogServices = new CatalogServices(); //ссылка на сервисы каталога
 
-		public CultureInfo culture = new CultureInfo("ru-RU");
-		private int deviceWidth;
-		private string format = string.Empty;
+		// public CultureInfo culture = new CultureInfo("ru-RU");
+		// private int deviceWidth;
+		// private string format = string.Empty;
 		public async Task OnGetAsync(string name, string category, string maxPrice, string minPrice, string[] tags, string[] color, string[] materials, string[] types, SortCatalog sortOrder, int productPage = 1)
 		{
 			// deviceWidth = Request.Headers["User-Agent"].ToString().Contains("Mobile") ? 720 : 1920;
@@ -59,7 +59,7 @@ namespace LampStore.Pages
 			DisplayedCategories = await repository.Category.Select(c => c).Distinct().ToListAsync(); //получение категорий
 			Category = new SelectList(await repository.Category.Select(c => c.CategoryName).Distinct().ToListAsync(), CategoryName); //получение списка категорий товара
 			DisplayedColors = await repository.Products.Select(p => p.Color).Distinct().ToListAsync(); //получаем цвета
-			DisplayedTypes = await repository.Types.Select(p => p).Distinct().ToListAsync(); //получаем типы
+			DisplayedTypes = await repository.Types.Where(p => p.Products.Count() > 0).Distinct().ToListAsync(); //получаем типы
 			string strMaterials = string.Join(",", repository.Products.Select(c => c.Material).Distinct().OrderBy(p => p)).ToString(); //получаем строку материалов
 			DisplayedMaterials = ParametersExtensions.GetDisplayParameters(strMaterials);
 
@@ -303,7 +303,7 @@ namespace LampStore.Pages
 		// 		ViewData["ImageUrl"] = ChecUrlPhoto;
 		// 		System.Console.WriteLine(false);
 		// 	}
-			
+
 		// 	// ViewData["ImageUrl"] = $"{pathPhoto}/small/{namePhoto}.{format}";
 		// 	// ViewData["ImageWidth"] = deviceWidth;
 

@@ -29,6 +29,29 @@
 						<ValidationMessage For="@(() => Product.Artikul)" />
 						<InputText class="form-control" @bind-Value="Product.Artikul" />
 					</div>
+					<div class="form-group mb-4">
+						<label>Коллекция</label>
+						@* <ValidationMessage For="@(() => Product.CollectionLightID)" /> *@
+						<select class="form-select" value="@Product.CollectionLightID"
+							@onchange="OnModelsLightsSelectChangeAsync">
+							<option value="">Выберите колекцию продукта</option>
+							@foreach (var item in CollectionsModelsData)
+							{
+								<option value="@item.ID">@item.Name</option>
+							}
+						</select>
+					</div>
+					<div class="form-group mb-4">
+						<label>Модель</label>
+						<InputSelect disabled="@(_isModelsLightsSelectDisabled)" @bind-Value="Product.ModelLightID"
+	   						class="form-select">
+							<option value="">Выберите модель продукта</option>
+							@foreach (var item in ModelsLightsData)
+							{
+								<option value="@item.ID">@item.Name</option>
+							}
+						</InputSelect>
+					</div>
 				</div>
 				<div class="col">
 					<div class="form-group">
@@ -125,9 +148,19 @@
 				<InputText class="form-control" @bind-Value="Product.Kelvins" />
 			</div>
 			<div class="form-group mb-4">
+				<label>Управление</label>
+				<ValidationMessage For="@(() => Product.AddControl)" />
+				<InputText class="form-control" @bind-Value="Product.AddControl" />
+			</div>
+			<div class="form-group mb-4">
 				<label>Наличие</label>
 				<ValidationMessage For="@(() => Product.Availability)" />
 				<InputCheckbox class="" @bind-Value="Product.Availability" />
+			</div>
+			<div class="form-group mb-4">
+				<label>Опубликован</label>
+				<ValidationMessage For="@(() => Product.IsAvailable)" />
+				<InputCheckbox class="" @bind-Value="Product.IsAvailable" />
 			</div>
 			<div class="form-group mb-4">
 				<label>Теги</label>
@@ -233,6 +266,7 @@
 		{
 			Product = await Repository.Products.FirstOrDefaultAsync(p => p.ProductID == Id) ?? new();
 		}
+		await UpdateData();
 	}
 
 	private string urlPath = "imegs/img-products/";
@@ -282,10 +316,20 @@
 	public List<Tag> ListAddTags { get; set; } = new();
 	public List<Tag> DisplayProductTags { get; set; } = new();
 
+	public IEnumerable<CollectionLight> CollectionsModelsData { get; set; } = Enumerable.Empty<CollectionLight>();
+
+	public IEnumerable<ModelLight> ModelsLightsData { get; set; } = Enumerable.Empty<ModelLight>();
 	public async Task UpdateData()
 	{
 		TagsData = await Repository.Tags.ToListAsync();
 		ProductTypesData = await Repository.Types.ToListAsync();
+		CollectionsModelsData = await Repository.CollectionsModels.ToListAsync();
+		if (Product.CollectionLightID != 0)
+		{
+			ModelsLightsData = await Repository.LightsModels.Where(m => m.CollectionLightID ==
+			Product.CollectionLightID).ToListAsync();
+		}
+
 		CheckTags(Product.ProductTags.ToList());
 		await InvokeAsync(StateHasChanged);
 	}
@@ -348,5 +392,23 @@ confirmation?.Show();
 	{
 		Repository.CreateType(Type);
 		await UpdateData();
+	}
+
+	private bool _isModelsLightsSelectDisabled = false;
+	private async Task OnModelsLightsSelectChangeAsync(ChangeEventArgs e)
+	{
+		if (e.Value != null && e.Value.ToString() != "")
+		{
+			Product.CollectionLightID = Convert.ToInt32(e.Value);
+			ModelsLightsData = await Repository.LightsModels.Where(m => m.CollectionLightID ==
+			Product.CollectionLightID).ToListAsync();
+			_isModelsLightsSelectDisabled = false;
+		}
+		else 
+		{
+			Product.CollectionLightID = null;
+			Product.ModelLightID = null;
+			_isModelsLightsSelectDisabled = true; 
+		}
 	}
 }

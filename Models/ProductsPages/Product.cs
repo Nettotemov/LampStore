@@ -60,5 +60,18 @@ namespace LampStore.Models
 		public ProductType? ProductType { get; set; }
 
 
+		// [Required(ErrorMessage = "Пожалуйста, укажите коллекцию")]
+		public int? CollectionLightID { get; set; }
+		public CollectionLight? CollectionLight { get; set; }
+
+		public int? ModelLightID { get; set; }
+
+		[JsonIgnore]
+		public ModelLight? ModelLight { get; set; }
+		public bool IsAvailable { get; set; }
+
+		[Required(ErrorMessage = "Пожалуйста, укажите управление")]
+		public string AddControl { get; set; } = string.Empty;
+
 	}
 }

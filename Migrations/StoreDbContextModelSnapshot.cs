@@ -66,6 +66,76 @@ namespace LampStore.Migrations
                     b.ToTable("AboutPages");
                 });
 
+            modelBuilder.Entity("LampStore.Models.AdditionalBlocksForCollection", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<byte>("AdditionalBlockType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Caption")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CollectionLightId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CollectionLightId");
+
+                    b.ToTable("AdditionalBlocksForCollection");
+                });
+
+            modelBuilder.Entity("LampStore.Models.AdditionalBlocksForModelLight", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<byte>("AdditionalBlockType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Caption")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ModelLightID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ModelLightID");
+
+                    b.ToTable("AdditionalBlocksForModelLight");
+                });
+
             modelBuilder.Entity("LampStore.Models.CartLine", b =>
                 {
                     b.Property<int>("CartLineID")
@@ -146,6 +216,57 @@ namespace LampStore.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Categorys");
+                });
+
+            modelBuilder.Entity("LampStore.Models.CollectionLight", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHomePage")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("CollectionLights");
+                });
+
+            modelBuilder.Entity("LampStore.Models.ConfidentPolicy", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ConfidentPolicyNodes");
                 });
 
             modelBuilder.Entity("LampStore.Models.Cooperation", b =>
@@ -246,6 +367,42 @@ namespace LampStore.Migrations
                     b.ToTable("InfoProp");
                 });
 
+            modelBuilder.Entity("LampStore.Models.ModelLight", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("CollectionLightID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHomePage")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CollectionLightID");
+
+                    b.ToTable("LightsModels");
+                });
+
             modelBuilder.Entity("LampStore.Models.Order", b =>
                 {
                     b.Property<int>("OrderID")
@@ -310,6 +467,10 @@ namespace LampStore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("ProductID"), 1L, 1);
 
+                    b.Property<string>("AddControl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Artikul")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -325,6 +486,9 @@ namespace LampStore.Migrations
                         .IsRequired()
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("CollectionLightID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -338,6 +502,9 @@ namespace LampStore.Migrations
 
                     b.Property<int?>("Discount")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Kelvins")
                         .IsRequired()
@@ -358,6 +525,9 @@ namespace LampStore.Migrations
                     b.Property<string>("MinDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModelLightID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -388,6 +558,10 @@ namespace LampStore.Migrations
                     b.HasKey("ProductID");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CollectionLightID");
+
+                    b.HasIndex("ModelLightID");
 
                     b.HasIndex("ProductTypeId");
 
@@ -470,6 +644,28 @@ namespace LampStore.Migrations
                     b.ToTable("ProductTag");
                 });
 
+            modelBuilder.Entity("LampStore.Models.AdditionalBlocksForCollection", b =>
+                {
+                    b.HasOne("LampStore.Models.CollectionLight", "CollectionModel")
+                        .WithMany("AdditionalBlocks")
+                        .HasForeignKey("CollectionLightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CollectionModel");
+                });
+
+            modelBuilder.Entity("LampStore.Models.AdditionalBlocksForModelLight", b =>
+                {
+                    b.HasOne("LampStore.Models.ModelLight", "ModelLight")
+                        .WithMany("AdditionalBlocks")
+                        .HasForeignKey("ModelLightID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModelLight");
+                });
+
             modelBuilder.Entity("LampStore.Models.CartLine", b =>
                 {
                     b.HasOne("LampStore.Models.Order", null)
@@ -494,6 +690,17 @@ namespace LampStore.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LampStore.Models.ModelLight", b =>
+                {
+                    b.HasOne("LampStore.Models.CollectionLight", "CollectionModel")
+                        .WithMany("ModelLights")
+                        .HasForeignKey("CollectionLightID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CollectionModel");
+                });
+
             modelBuilder.Entity("LampStore.Models.Product", b =>
                 {
                     b.HasOne("LampStore.Models.Category", "Category")
@@ -502,6 +709,14 @@ namespace LampStore.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LampStore.Models.CollectionLight", "CollectionLight")
+                        .WithMany("Products")
+                        .HasForeignKey("CollectionLightID");
+
+                    b.HasOne("LampStore.Models.ModelLight", "ModelLight")
+                        .WithMany("Products")
+                        .HasForeignKey("ModelLightID");
+
                     b.HasOne("LampStore.Models.ProductType", "ProductType")
                         .WithMany("Products")
                         .HasForeignKey("ProductTypeId")
@@ -509,6 +724,10 @@ namespace LampStore.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("CollectionLight");
+
+                    b.Navigation("ModelLight");
 
                     b.Navigation("ProductType");
                 });
@@ -528,9 +747,25 @@ namespace LampStore.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LampStore.Models.CollectionLight", b =>
+                {
+                    b.Navigation("AdditionalBlocks");
+
+                    b.Navigation("ModelLights");
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("LampStore.Models.Info", b =>
                 {
                     b.Navigation("InfoProp");
+                });
+
+            modelBuilder.Entity("LampStore.Models.ModelLight", b =>
+                {
+                    b.Navigation("AdditionalBlocks");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("LampStore.Models.Order", b =>
